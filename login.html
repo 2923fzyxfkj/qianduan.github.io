@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>登录 - 千端网盘</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #f5f5f5;
+        }
+        .container {
+            text-align: center;
+            background: white;
+            padding: 40px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            width: 300px;
+        }
+        h2 {
+            color: #333;
+            margin-bottom: 20px;
+        }
+        .form-group {
+            margin-bottom: 15px;
+            text-align: left;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+            color: #555;
+        }
+        input {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+        .btn {
+            display: inline-block;
+            padding: 10px 20px;
+            margin-top: 10px;
+            text-decoration: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+            border: none;
+            width: 100%;
+        }
+        .login-btn {
+            background-color: #2196F3;
+            color: white;
+        }
+        .back-btn {
+            background-color: #999;
+            color: white;
+            margin-top: 10px;
+        }
+        .register-link {
+            display: block;
+            margin-top: 15px;
+            color: #2196F3;
+            text-decoration: none;
+        }
+        .error {
+            color: red;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>用户登录</h2>
+        <form id="loginForm">
+            <div class="form-group">
+                <label for="username">用户名</label>
+                <input type="text" id="username" required>
+            </div>
+            <div class="form-group">
+                <label for="password">密码</label>
+                <input type="password" id="password" required>
+            </div>
+            <button type="submit" class="btn login-btn">登录</button>
+        </form>
+        <div id="error" class="error" style="display: none;"></div>
+        <a href="register.html" class="register-link">还没有账户？点击注册</a>
+        <a href="index.html" class="btn back-btn">返回首页</a>
+    </div>
+    <script>
+        // 简单的哈希函数（与注册页面保持一致）
+        function simpleHash(str) {
+            let hash = 0;
+            for (let i = 0; i < str.length; i++) {
+                const char = str.charCodeAt(i);
+                hash = ((hash << 5) - hash) + char;
+                hash = hash & hash; // 转换为32位整数
+            }
+            return hash.toString();
+        }
+
+        document.getElementById('loginForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+            
+            // 从localStorage获取用户数据
+            const users = JSON.parse(localStorage.getItem('users')) || [];
+            
+            // 查找用户
+            const user = users.find(u => u.username === username);
+            
+            if (!user) {
+                document.getElementById('error').textContent = '用户名不存在';
+                document.getElementById('error').style.display = 'block';
+                return;
+            }
+            
+            // 验证密码（比较哈希值）
+            const passwordHash = simpleHash(password);
+            if (user.password !== passwordHash) {
+                document.getElementById('error').textContent = '密码错误';
+                document.getElementById('error').style.display = 'block';
+                return;
+            }
+            
+            // 登录成功，存储用户信息到localStorage
+            // 注意：这只是为前端显示而存储，不包含敏感信息
+            localStorage.setItem('currentUser', JSON.stringify({
+                id: user.id,
+                username: user.username,
+                email: user.email
+            }));
+            localStorage.setItem('isLoggedIn', 'true');
+            
+            alert('登录成功！');
+            window.location.href = 'index.html';
+        });
+    </script>
+</body>
+</html>
