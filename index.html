@@ -106,35 +106,58 @@
         <div id="userSection" style="display: none;">
             <p class="welcome">欢迎，<span id="username"></span>！</p>
             
-            <!-- GitHub 认证区域 -->
-            <div class="upload-section">
-                <h3>GitHub 认证</h3>
-                <p>为了保存内容，需要连接到您的 GitHub 账户</p>
-                <button id="githubAuthBtn" class="btn github-auth-btn">连接 GitHub</button>
-                <div id="githubStatus"></div>
-            </div>
-            
-            <!-- 创建 Gist 区域 -->
-            <div class="upload-section">
-                <h3>创建新 Gist</h3>
-                <input type="text" id="gistFilename" class="file-input" placeholder="文件名 (如: my-note.txt)">
-                <textarea id="gistContent" class="file-input" rows="5" placeholder="在这里输入内容..."></textarea>
-                <button id="createGistBtn" class="btn upload-btn" disabled>创建 Gist</button>
-                <div id="gistStatus"></div>
-            </div>
-            
-            <!-- Gist 列表 -->
-            <div class="file-list">
-                <h3>我的 Gists</h3>
-                <div id="gistList"></div>
+            <!-- GitHub 认证区域 -->
+
+            <div class="upload-section">
+
+                <h3>GitHub 认证</h3>
+
+                <p>为了保存内容，需要连接到您的 GitHub 账户</p>
+
+                <button id="githubAuthBtn" class="btn github-auth-btn">连接 GitHub</button>
+
+                <div id="githubStatus"></div>
+
+            </div>
+
+            
+
+            <!-- 创建 Gist 区域 -->
+
+            <div class="upload-section">
+
+                <h3>创建新 Gist</h3>
+
+                <input type="text" id="gistFilename" class="file-input" placeholder="文件名 (如: my-note.txt)">
+
+                <textarea id="gistContent" class="file-input" rows="5" placeholder="在这里输入内容..."></textarea>
+
+                <button id="createGistBtn" class="btn upload-btn" disabled>创建 Gist</button>
+
+                <div id="gistStatus"></div>
+
+            </div>
+
+            
+
+            <!-- Gist 列表 -->
+
+            <div class="file-list">
+
+                <h3>我的 Gists</h3>
+
+                <div id="gistList"></div>
+
             </div>
             
             <a href="#" class="btn logout-btn" id="logoutBtn">退出登录</a>
         </div>
     </div>
     <script>
-        // GitHub 配置
-        const GITHUB_TOKEN_KEY = 'github_token';
+        // GitHub 配置
+
+        const GITHUB_TOKEN_KEY = 'github_token';
+
         const GIST_LIST_KEY = 'user_gists';
         
         // 检查用户登录状态
@@ -156,74 +179,138 @@
             }
         }
         
-        // 检查 GitHub 认证状态
-        function checkGithubAuth() {
-            const token = getGithubToken(); // 使用解密函数获取token
-            const githubStatus = document.getElementById('githubStatus');
-            const createGistBtn = document.getElementById('createGistBtn');
-            
-            if (token) {
-                githubStatus.textContent = '已连接到 GitHub';
-                githubStatus.style.color = 'green';
-                createGistBtn.disabled = false;
-            } else {
-                githubStatus.textContent = '请连接 GitHub 以启用 Gist 功能';
-                githubStatus.style.color = 'red';
-                createGistBtn.disabled = true;
-            }
+        // 检查 GitHub 认证状态
+
+        function checkGithubAuth() {
+
+            const token = getGithubToken(); // 使用解密函数获取token
+
+            const githubStatus = document.getElementById('githubStatus');
+
+            const createGistBtn = document.getElementById('createGistBtn');
+
+            
+
+            if (token) {
+
+                githubStatus.textContent = '已连接到 GitHub';
+
+                githubStatus.style.color = 'green';
+
+                createGistBtn.disabled = false;
+
+            } else {
+
+                githubStatus.textContent = '请连接 GitHub 以启用 Gist 功能';
+
+                githubStatus.style.color = 'red';
+
+                createGistBtn.disabled = true;
+
+            }
+
         }
         
-        // GitHub 认证
-        document.getElementById('githubAuthBtn').addEventListener('click', function() {
-            // GitHub OAuth 配置
-            const CLIENT_ID = 'your_github_oauth_app_client_id_here'; // 需要替换为实际的Client ID
-            const REDIRECT_URI = encodeURIComponent(window.location.href.split('?')[0]);
-            const SCOPE = 'gist'; // 只请求gist权限
-            
-            // 构建OAuth URL
-            const authUrl = `https://github.com/login/oauth/authorize?` +
-                `client_id=${CLIENT_ID}&` +
-                `redirect_uri=${REDIRECT_URI}&` +
-                `scope=${SCOPE}&` +
-                `state=${Math.random().toString(36).substring(2, 15)}`;
-            
-            // 重定向到GitHub OAuth页面
-            window.location.href = authUrl;
-        });
-        
-        // 处理OAuth回调
-        function handleOAuthCallback() {
-            const urlParams = new URLSearchParams(window.location.search);
-            const code = urlParams.get('code');
-            const state = urlParams.get('state');
-            
-            if (code) {
-                // 在真实的部署环境中，这里会通过后端服务器安全地获取access_token。
-                // 由于这是GitHub Pages静态页面，无法直接获取token，需要通过后端服务处理。
-                // 作为替代方案，我们可以引导用户在GitHub上复制token并手动输入
-                alert('认证成功！现在请在GitHub授权页面复制access_token，并在弹出的对话框中输入。');
-                
-                // 清理URL参数
-                window.history.replaceState({}, document.title, window.location.pathname);
-                
-                // 提示用户输入token
-                const token = prompt('请输入从GitHub获取的access_token:');
-                if (token) {
-                    saveGithubToken(token); // 使用加密函数存储token
-                    checkGithubAuth();
-                }
-            }
+        // GitHub 认证
+
+        document.getElementById('githubAuthBtn').addEventListener('click', function() {
+
+            // GitHub OAuth 配置
+
+            const CLIENT_ID = 'Ov23liRWx0TWNCcNMYSx'; // 需要替换为实际的Client ID
+
+            const REDIRECT_URI = encodeURIComponent(window.location.href.split('?')[0]);
+
+            const SCOPE = 'gist'; // 只请求gist权限
+
+            
+
+            // 构建OAuth URL
+
+            const authUrl = `https://github.com/login/oauth/authorize?` +
+
+                `client_id=${CLIENT_ID}&` +
+
+                `redirect_uri=${REDIRECT_URI}&` +
+
+                `scope=${SCOPE}&` +
+
+                `state=${Math.random().toString(36).substring(2, 15)}`;
+
+            
+
+            // 重定向到GitHub OAuth页面
+
+            window.location.href = authUrl;
+
+        });
+
+        
+
+        // 处理OAuth回调
+
+        function handleOAuthCallback() {
+
+            const urlParams = new URLSearchParams(window.location.search);
+
+            const code = urlParams.get('code');
+
+            const state = urlParams.get('state');
+
+            
+
+            if (code) {
+
+                // 在真实的部署环境中，这里会通过后端服务器安全地获取access_token。
+
+                // 由于这是GitHub Pages静态页面，无法直接获取token，需要通过后端服务处理。
+
+                // 作为替代方案，我们可以引导用户在GitHub上复制token并手动输入
+
+                alert('认证成功！现在请在GitHub授权页面复制access_token，并在弹出的对话框中输入。');
+
+                
+
+                // 清理URL参数
+
+                window.history.replaceState({}, document.title, window.location.pathname);
+
+                
+
+                // 提示用户输入token
+
+                const token = prompt('请输入从GitHub获取的access_token:');
+
+                if (token) {
+
+                    saveGithubToken(token); // 使用加密函数存储token
+
+                    checkGithubAuth();
+
+                }
+
+            }
+
         }
         
-        // 退出登录功能 - 只清除登录状态，保留注册信息
-        document.getElementById('logoutBtn').addEventListener('click', function(e) {
-            e.preventDefault();
-            // 只清除登录状态，保留用户注册信息
-            localStorage.removeItem('isLoggedIn');
-            localStorage.removeItem('currentUser');
-            // 同时清除 GitHub token
-            localStorage.removeItem(GITHUB_TOKEN_KEY);
-            checkLoginStatus();
+        // 退出登录功能 - 只清除登录状态，保留注册信息
+
+        document.getElementById('logoutBtn').addEventListener('click', function(e) {
+
+            e.preventDefault();
+
+            // 只清除登录状态，保留用户注册信息
+
+            localStorage.removeItem('isLoggedIn');
+
+            localStorage.removeItem('currentUser');
+
+            // 同时清除 GitHub token
+
+            localStorage.removeItem(GITHUB_TOKEN_KEY);
+
+            checkLoginStatus();
+
         });
         
         // 创建 Gist 功能
@@ -437,10 +524,14 @@ ${content}`);
             }
         }
         
-        // 页面加载时检查登录状态
-        window.onload = function() {
-            checkLoginStatus();
-            handleOAuthCallback(); // 处理OAuth回调
+        // 页面加载时检查登录状态
+
+        window.onload = function() {
+
+            checkLoginStatus();
+
+            handleOAuthCallback(); // 处理OAuth回调
+
         };
     </script>
 </body>
