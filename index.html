@@ -122,25 +122,34 @@
 
             
 
-            <!-- 创建 Gist 区域 -->
+            <!-- 文件/文件夹上传区域 -->
 
             <div class="upload-section">
 
-                <h3>创建新 Gist</h3>
+                <h3>上传文件/文件夹</h3>
 
-                <input type="text" id="gistFilename" class="file-input" placeholder="文件名 (如: my-note.txt)">
+                <div class="file-input">
+                    <label for="filePicker" style="display: block; margin-bottom: 10px;">选择文件或文件夹:</label>
+                    <input type="file" id="filePicker" class="file-input" webkitdirectory multiple>
+                </div>
 
-                <textarea id="gistContent" class="file-input" rows="5" placeholder="在这里输入内容..."></textarea>
+                <button id="uploadBtn" class="btn upload-btn" disabled>上传</button>
 
-                <button id="uploadBtn" class="btn upload-btn" disabled>上传文件</button>
-
-                <div id="gistStatus"></div>
+                <div id="uploadStatus"></div>
+                
+                <!-- 上传进度条 -->
+                <div id="uploadProgress" class="upload-progress" style="display: none;">
+                    <div class="progress-bar">
+                        <div id="progressFill" class="progress-fill"></div>
+                    </div>
+                    <div id="progressText">0%</div>
+                </div>
 
             </div>
 
             
 
-            <!-- Gist 列表 -->
+            <!-- Gist 列表   -->
 
             <div class="file-list">
 
@@ -317,11 +326,11 @@
         
         // 文件上传功能
         document.getElementById('uploadBtn').addEventListener('click', function() {
-            const fileInput = document.getElementById('fileInput');
-            const files = fileInput.files;
+            const filePicker = document.getElementById('filePicker');
+            const files = filePicker.files;
             
             if (files.length === 0) {
-                alert('请选择要上传的文件');
+                alert('请选择要上传的文件或文件夹');
                 return;
             }
             
@@ -351,7 +360,7 @@
                 
                 try {
                     // 读取文件内容
-                    const content = await readFileAsBase64(file);
+                    const content = await readFileAsText(file); // 使用普通的文本读取方式
                     
                     // 上传到GitHub Gist
                     const response = await fetch('https://api.github.com/gists', {
@@ -387,7 +396,7 @@
                     uploadStatus.textContent = `上传失败 ${file.name}: ${error.message}`;
                     uploadStatus.style.color = 'red';
                     console.error('上传文件错误:', error);
-                    return;
+                    continue; // 继续上传其他文件，而不是返回
                 }
             }
             
@@ -395,7 +404,7 @@
             uploadStatus.style.color = 'green';
             
             // 清空文件选择
-            document.getElementById('fileInput').value = '';
+            document.getElementById('filePicker').value = '';
             
             // 隐藏进度条
             setTimeout(() => {
@@ -408,30 +417,17 @@
             loadUserFiles();
         }
         
-        // 将文件读取为Base64
-        function readFileAsBase64(file) {
+        // 将文件读取为文本
+        function readFileAsText(file) {
             return new Promise((resolve, reject) => {
                 const reader = new FileReader();
                 reader.onload = () => {
-                    // 对于文本文件，我们直接使用文本内容
-                    // 对于二进制文件，需要处理
-                    if (file.type.startsWith('text/') || file.name.endsWith('.txt') || file.name.endsWith('.js') || file.name.endsWith('.html') || file.name.endsWith('.css') || file.name.endsWith('.json') || file.name.endsWith('.md')) {
-                        resolve(reader.result);
-                    } else {
-                        // 对于二进制文件，使用base64编码
-                        const binary = reader.result;
-                        const base64 = btoa(binary.split('').map(c => String.fromCharCode(c.charCodeAt(0) & 0xff)).join(''));
-                        resolve(base64);
-                    }
+                    resolve(reader.result);
                 };
                 reader.onerror = reject;
                 
-                // 根据文件类型决定读取方式
-                if (file.type.startsWith('text/') || file.name.endsWith('.txt') || file.name.endsWith('.js') || file.name.endsWith('.html') || file.name.endsWith('.css') || file.name.endsWith('.json') || file.name.endsWith('.md')) {
-                    reader.readAsText(file);
-                } else {
-                    reader.readAsBinaryString(file);
-                }
+                // 对所有文件使用readAsText，对于文本文件这会直接返回内容，对于二进制文件会尝试转换
+                reader.readAsText(file);
             });
         }
         
@@ -477,7 +473,7 @@
         
         // 显示文件列表
         function displayFiles(gists) {
-            const fileList = document.getElementById('fileList');
+            const fileList = document.getElementById('gistList');
             
             if (gists.length === 0) {
                 fileList.innerHTML = '<p>暂无文件</p>';
