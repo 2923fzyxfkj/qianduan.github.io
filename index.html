@@ -6,68 +6,98 @@
     <title>千端网盘</title>
     <style>
         body {
-            font-family: Arial, sans-serif;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             display: flex;
             justify-content: center;
             align-items: center;
-            height: 100vh;
+            min-height: 100vh;
             margin: 0;
-            background-color: #f5f5f5;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 20px;
         }
         .container {
             text-align: center;
             background: white;
             padding: 40px;
-            border-radius: 8px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-            width: 400px;
+            border-radius: 12px;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.3);
+            width: 100%;
+            max-width: 500px;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            position: relative;
+        }
+        .container:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.4);
         }
         h1 {
             color: #333;
             margin-bottom: 30px;
+            font-size: 28px;
+            font-weight: 600;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.2);
         }
         .btn {
             display: inline-block;
             padding: 12px 24px;
-            margin: 10px;
+            margin: 10px 5px;
             text-decoration: none;
-            border-radius: 4px;
+            border-radius: 6px;
             cursor: pointer;
             font-size: 16px;
             border: none;
+            transition: all 0.3s ease;
+            font-weight: 500;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+        }
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(0,0,0,0.3);
+        }
+        .btn:active {
+            transform: translateY(1px);
+            box-shadow: 0 2px 4px rgba(0,0,0,0.2);
         }
         .register-btn {
-            background-color: #4CAF50;
+            background: linear-gradient(135deg, #4CAF50, #45a049);
             color: white;
         }
         .login-btn {
-            background-color: #2196F3;
+            background: linear-gradient(135deg, #2196F3, #1976D2);
             color: white;
         }
         .welcome {
             color: #333;
             margin-bottom: 20px;
+            font-size: 18px;
+            font-weight: 500;
         }
         .logout-btn {
-            background-color: #f44336;
+            background: linear-gradient(135deg, #f44336, #d32f2f);
             color: white;
         }
         .upload-section {
             margin-top: 20px;
             padding: 20px;
-            border: 1px dashed #ccc;
-            border-radius: 4px;
+            border: 2px dashed #ccc;
+            border-radius: 8px;
             background-color: #f9f9f9;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+        .upload-section:hover {
+            border-color: #2196F3;
+            box-shadow: 0 6px 12px rgba(0,0,0,0.15);
         }
         .file-input {
             margin: 10px 0;
         }
         .upload-btn {
-            background-color: #FF9800;
+            background: linear-gradient(135deg, #FF9800, #F57C00);
             color: white;
         }
         .github-auth-btn {
-            background-color: #333;
+            background: linear-gradient(135deg, #333, #222);
             color: white;
         }
         .file-list {
@@ -75,11 +105,44 @@
             margin-top: 20px;
         }
         .file-item {
-            padding: 5px 0;
+            padding: 12px 15px;
             border-bottom: 1px solid #eee;
+            background-color: #fff;
+            border-radius: 6px;
+            margin-bottom: 10px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+        }
+        .file-item:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(0,0,0,0.15);
+        }
+        .file-actions {
+            margin-top: 8px;
+        }
+        .file-actions button {
+            padding: 6px 12px;
+            margin-right: 8px;
+            margin-top: 5px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            background-color: #2196F3;
+            color: white;
+        }
+        .file-actions button:hover {
+            background-color: #1976D2;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+        }
+        .file-actions button:active {
+            background-color: #0D47A1;
+            box-shadow: 0 1px 2px rgba(0,0,0,0.1);
         }
         .upload-progress {
-            margin-top: 10px;
+            margin-top: 15px;
         }
         .progress-bar {
             width: 100%;
@@ -87,12 +150,55 @@
             background-color: #f0f0f0;
             border-radius: 10px;
             overflow: hidden;
+            box-shadow: inset 0 2px 4px rgba(0,0,0,0.1), 0 2px 4px rgba(0,0,0,0.1);
         }
         .progress-fill {
             height: 100%;
-            background-color: #4CAF50;
+            background: linear-gradient(90deg, #4CAF50, #8BC34A);
             width: 0%;
-            transition: width 0.3s;
+            transition: width 0.3s ease;
+            box-shadow: inset 0 2px 4px rgba(255,255,255,0.3);
+        }
+        #progressText {
+            margin-top: 5px;
+            font-size: 14px;
+            color: #666;
+            font-weight: 500;
+        }
+        #githubStatus, #uploadStatus {
+            margin-top: 10px;
+            padding: 8px;
+            border-radius: 4px;
+            font-size: 14px;
+        }
+        #githubStatus {
+            background-color: #e3f2fd;
+        }
+        #uploadStatus {
+            background-color: #fff3e0;
+        }
+        #deleteAccountBtn {
+            background: linear-gradient(135deg, #999, #777);
+            color: white;
+        }
+        select, input[type="text"], input[type="file"], textarea {
+            width: 100%;
+            padding: 10px;
+            border: 2px solid #ddd;
+            border-radius: 6px;
+            font-size: 16px;
+            transition: border-color 0.3s ease;
+            box-sizing: border-box;
+        }
+        select:focus, input[type="text"]:focus, input[type="file"]:focus, textarea:focus {
+            border-color: #2196F3;
+            outline: none;
+        }
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+            color: #555;
         }
     </style>
 </head>
@@ -124,26 +230,141 @@
 
             <!-- 文件/文件夹上传区域 -->
 
+
+
             <div class="upload-section">
+
+
 
                 <h3>上传文件/文件夹</h3>
 
+
+
                 <div class="file-input">
+
                     <label for="filePicker" style="display: block; margin-bottom: 10px;">选择文件或文件夹:</label>
+
                     <input type="file" id="filePicker" class="file-input" webkitdirectory multiple>
+
                 </div>
+
+                
+
+                <div class="file-input" style="font-size: 12px; color: #856404; margin: 5px 0; background-color: #fff3cd; padding: 6px 10px; border-radius: 4px; display: inline-block;">
+
+                    提示：多文件请打包为zip上传
+
+                </div>
+
+                
+
+                <div class="file-input">
+
+                    <label for="deletePermission" style="display: block; margin-bottom: 10px;">谁可以删除:</label>
+
+                    <select id="deletePermission" class="file-input">
+
+                        <option value="owner">仅上传者</option>
+
+                        <option value="all">所有人</option>
+
+                        <option value="specific">指定用户</option>
+
+                    </select>
+
+                </div>
+
+
+
+                <div class="file-input" id="specificUsersContainer" style="display: none;">
+
+                    <label for="specificUsers" style="display: block; margin-bottom: 10px;">可删除的用户名 (用逗号分隔):</label>
+
+                    <input type="text" id="specificUsers" class="file-input" placeholder="例如: user1, user2, user3">
+
+                </div>
+
+                
+
+                <div class="file-input">
+
+                    <label for="downloadPermission" style="display: block; margin-bottom: 10px;">谁可以下载:</label>
+
+                    <select id="downloadPermission" class="file-input">
+
+                        <option value="owner">仅上传者</option>
+
+                        <option value="all">所有人</option>
+
+                        <option value="specific">指定用户</option>
+
+                    </select>
+
+                </div>
+
+                
+
+                <div class="file-input">
+
+                    <label for="modifyPermission" style="display: block; margin-bottom: 10px;">谁可以修改:</label>
+
+                    <select id="modifyPermission" class="file-input">
+
+                        <option value="owner">仅上传者</option>
+
+                        <option value="all">所有人</option>
+
+                        <option value="specific">指定用户</option>
+
+                    </select>
+
+                </div>
+
+                
+
+                <div class="file-input" id="specificDownloadUsersContainer" style="display: none;">
+
+                    <label for="specificDownloadUsers" style="display: block; margin-bottom: 10px;">可下载的用户名 (用逗号分隔):</label>
+
+                    <input type="text" id="specificDownloadUsers" class="file-input" placeholder="例如: user1, user2, user3">
+
+                </div>
+
+                
+
+                <div class="file-input" id="specificModifyUsersContainer" style="display: none;">
+
+                    <label for="specificModifyUsers" style="display: block; margin-bottom: 10px;">可修改的用户名 (用逗号分隔):</label>
+
+                    <input type="text" id="specificModifyUsers" class="file-input" placeholder="例如: user1, user2, user3">
+
+                </div>
+
+
 
                 <button id="uploadBtn" class="btn upload-btn" disabled>上传</button>
 
+
+
                 <div id="uploadStatus"></div>
+
                 
+
                 <!-- 上传进度条 -->
+
                 <div id="uploadProgress" class="upload-progress" style="display: none;">
+
                     <div class="progress-bar">
+
                         <div id="progressFill" class="progress-fill"></div>
+
                     </div>
+
                     <div id="progressText">0%</div>
+
                 </div>
+
+
 
             </div>
 
@@ -160,6 +381,7 @@
             </div>
             
             <a href="#" class="btn logout-btn" id="logoutBtn">退出登录</a>
+            <a href="#" class="btn" id="deleteAccountBtn" style="background-color: #999; color: white; margin-top: 10px;">注销账号</a>
         </div>
     </div>
     <script>
@@ -175,6 +397,22 @@
             const currentUser = JSON.parse(localStorage.getItem('currentUser'));
             
             if (isLoggedIn && currentUser) {
+                // 验证用户是否仍然存在于用户列表中（防止伪造登录）
+                const users = JSON.parse(localStorage.getItem('users')) || [];
+                const validUser = users.some(user => 
+                    user.id === currentUser.id && 
+                    user.username === currentUser.username
+                );
+                
+                if (!validUser) {
+                    // 用户不存在，清除登录状态
+                    localStorage.removeItem('isLoggedIn');
+                    localStorage.removeItem('currentUser');
+                    document.getElementById('authSection').style.display = 'block';
+                    document.getElementById('userSection').style.display = 'none';
+                    return;
+                }
+                
                 document.getElementById('authSection').style.display = 'none';
                 document.getElementById('userSection').style.display = 'block';
                 document.getElementById('username').textContent = currentUser.username;
@@ -188,6 +426,16 @@
                 document.getElementById('authSection').style.display = 'block';
                 document.getElementById('userSection').style.display = 'none';
             }
+        }
+        
+        // 获取GitHub Token
+        function getGithubToken() {
+            return localStorage.getItem(GITHUB_TOKEN_KEY);
+        }
+
+        // 保存GitHub Token
+        function saveGithubToken(token) {
+            localStorage.setItem(GITHUB_TOKEN_KEY, token);
         }
         
         // 检查 GitHub 认证状态
@@ -208,17 +456,17 @@
 
                 githubStatus.style.color = 'green';
 
-                uploadBtn.disabled = false;
-
             } else {
 
-                githubStatus.textContent = '请连接 GitHub 以启用 Gist 功能';
+                githubStatus.textContent = '连接 GitHub 可启用云端存储';
 
                 githubStatus.style.color = 'red';
 
-                uploadBtn.disabled = true;
-
             }
+
+            // 上传按钮始终可用，因为文件可以存储在本地
+
+            uploadBtn.disabled = false;
 
         }
         
@@ -324,6 +572,129 @@
 
         });
         
+        // 注销账号功能 - 删除用户账户和所有相关数据
+        document.getElementById('deleteAccountBtn').addEventListener('click', function(e) {
+            e.preventDefault();
+            
+            // 获取当前用户信息
+            const currentUser = JSON.parse(localStorage.getItem('currentUser') || '{}');
+            if (!currentUser.id || !currentUser.username) {
+                alert('无法获取当前用户信息');
+                return;
+            }
+            
+            // 检查是否为管理员账号
+            const isAdmin = currentUser.username === 'admin';
+            
+            if (isAdmin) {
+                // 管理员功能：可以选择删除其他用户账号
+                showAdminAccountDeletionUI();
+            } else {
+                // 普通用户功能：只能删除自己的账号
+                if (!confirm('确定要注销您的账号吗？此操作将永久删除您的账户及所有上传的文件，且无法恢复！')) {
+                    return;
+                }
+                
+                // 删除当前用户
+                deleteAccount(currentUser);
+            }
+        });
+        
+        // 显示管理员账号删除界面
+        function showAdminAccountDeletionUI() {
+            // 获取所有用户列表
+            const users = JSON.parse(localStorage.getItem('users') || '[]');
+            
+            if (users.length === 0) {
+                alert('没有可删除的用户');
+                return;
+            }
+            
+            // 创建一个选择界面来选择要删除的用户
+            const userSelect = document.createElement('div');
+            userSelect.id = 'adminUserSelect';
+            userSelect.style.position = 'fixed';
+            userSelect.style.top = '50%';
+            userSelect.style.left = '50%';
+            userSelect.style.transform = 'translate(-50%, -50%)';
+            userSelect.style.backgroundColor = 'white';
+            userSelect.style.padding = '20px';
+            userSelect.style.border = '1px solid #ccc';
+            userSelect.style.borderRadius = '8px';
+            userSelect.style.zIndex = '1000';
+            userSelect.style.boxShadow = '0 4px 8px rgba(0,0,0,0.2)';
+            
+            let userOptions = '<h3>选择要删除的用户</h3><select id="userToDelete" style="width: 100%; padding: 8px; margin: 10px 0;">';
+            users.forEach(user => {
+                if (user.username.toLowerCase() !== 'admin') { // 排除admin账号自身
+                    userOptions += `<option value="${user.id}">${user.username}</option>`;
+                }
+            });
+            userOptions += '</select>';
+            
+            userOptions += '<div style="margin-top: 15px; display: flex; gap: 10px;">';
+            userOptions += '<button id="confirmDeleteUserBtn" style="flex: 1; padding: 10px; background-color: #f44336; color: white; border: none; border-radius: 4px; cursor: pointer;">确认删除</button>';
+            userOptions += '<button id="cancelDeleteUserBtn" style="flex: 1; padding: 10px; background-color: #999; color: white; border: none; border-radius: 4px; cursor: pointer;">取消</button>';
+            userOptions += '</div>';
+            
+            userSelect.innerHTML = userOptions;
+            document.body.appendChild(userSelect);
+            
+            // 绑定确认删除按钮事件
+            document.getElementById('confirmDeleteUserBtn').addEventListener('click', function() {
+                const userIdToDelete = parseInt(document.getElementById('userToDelete').value);
+                if (userIdToDelete) {
+                    // 找到要删除的用户信息
+                    const users = JSON.parse(localStorage.getItem('users') || '[]');
+                    const userToDelete = users.find(user => user.id === userIdToDelete);
+                    
+                    if (userToDelete) {
+                        if (confirm(`确定要删除用户 "${userToDelete.username}" 的账号吗？此操作将永久删除该用户的账户及所有上传的文件，且无法恢复！`)) {
+                            deleteAccount(userToDelete);
+                        }
+                    }
+                }
+                document.body.removeChild(userSelect);
+            });
+            
+            // 绑定取消按钮事件
+            document.getElementById('cancelDeleteUserBtn').addEventListener('click', function() {
+                document.body.removeChild(userSelect);
+            });
+        }
+        
+        // 删除指定用户账号的通用函数
+        function deleteAccount(user) {
+            // 从用户列表中删除指定用户
+            const users = JSON.parse(localStorage.getItem('users') || '[]');
+            const updatedUsers = users.filter(u => u.id !== user.id);
+            localStorage.setItem('users', JSON.stringify(updatedUsers));
+            
+            // 删除与该用户相关的所有文件
+            const allFiles = JSON.parse(localStorage.getItem(FILE_LIST_KEY) || '[]');
+            const filteredFiles = allFiles.filter(file => {
+                // 保留非本地文件（即GitHub Gist文件）或非指定用户上传的本地文件
+                return !file.isLocal || file.uploader !== user.username;
+            });
+            localStorage.setItem(FILE_LIST_KEY, JSON.stringify(filteredFiles));
+            
+            // 如果是删除当前登录的用户，则清除登录状态
+            const currentUser = JSON.parse(localStorage.getItem('currentUser') || '{}');
+            if (currentUser.id === user.id) {
+                localStorage.removeItem('isLoggedIn');
+                localStorage.removeItem('currentUser');
+                localStorage.removeItem(GITHUB_TOKEN_KEY);
+                
+                alert('账号已成功注销，所有相关数据已删除！');
+                
+                // 重定向到首页
+                window.location.href = 'index.html';
+            } else {
+                // 管理员删除其他用户
+                alert(`用户 "${user.username}" 的账号已成功删除，所有相关数据已清除！`);
+            }
+        }
+        
         // 文件上传功能
         document.getElementById('uploadBtn').addEventListener('click', function() {
             const filePicker = document.getElementById('filePicker');
@@ -334,58 +705,194 @@
                 return;
             }
             
-            const token = getGithubToken(); // 使用解密函数获取token
-            if (!token) {
-                alert('请先连接 GitHub');
-                return;
+            // 上传文件（现在存储在localStorage中，不需要GitHub token）
+            uploadFiles(files);
+        });
+        
+        // 监听删除权限选择变化
+
+        document.getElementById('deletePermission').addEventListener('change', function() {
+
+            const specificUsersContainer = document.getElementById('specificUsersContainer');
+
+            if (this.value === 'specific') {
+
+                specificUsersContainer.style.display = 'block';
+
+            } else {
+
+                specificUsersContainer.style.display = 'none';
+
             }
-            
-            // 上传文件
-            uploadFiles(files, token);
+
+        });
+
+        
+
+        // 监听下载权限选择变化
+
+        document.getElementById('downloadPermission').addEventListener('change', function() {
+
+            const specificDownloadUsersContainer = document.getElementById('specificDownloadUsersContainer');
+
+            if (this.value === 'specific') {
+
+                specificDownloadUsersContainer.style.display = 'block';
+
+            } else {
+
+                specificDownloadUsersContainer.style.display = 'none';
+
+            }
+
+        });
+
+        
+
+        // 监听修改权限选择变化
+
+        document.getElementById('modifyPermission').addEventListener('change', function() {
+
+            const specificModifyUsersContainer = document.getElementById('specificModifyUsersContainer');
+
+            if (this.value === 'specific') {
+
+                specificModifyUsersContainer.style.display = 'block';
+
+            } else {
+
+                specificModifyUsersContainer.style.display = 'none';
+
+            }
+
         });
         
         // 上传文件
-        async function uploadFiles(files, token) {
+        async function uploadFiles(files) {
             const uploadStatus = document.getElementById('uploadStatus');
             const uploadProgress = document.getElementById('uploadProgress');
             const progressFill = document.getElementById('progressFill');
             const progressText = document.getElementById('progressText');
             
+            // 获取现有的本地文件列表
+            let localFiles = JSON.parse(localStorage.getItem(FILE_LIST_KEY) || '[]');
+            
             for (let i = 0; i < files.length; i++) {
                 const file = files[i];
                 
-                uploadStatus.textContent = `正在上传: ${file.name} (${i+1}/${files.length})`;
+                uploadStatus.textContent = `正在处理: ${file.name} (${i+1}/${files.length})`;
                 uploadStatus.style.color = 'orange';
                 uploadProgress.style.display = 'block';
                 
                 try {
-                    // 读取文件内容
-                    const content = await readFileAsText(file); // 使用普通的文本读取方式
+                    // 将文件转换为十六进制并存储到localStorage
+                    const hexContent = await readFileAsHex(file);
                     
-                    // 上传到GitHub Gist
-                    const response = await fetch('https://api.github.com/gists', {
-                        method: 'POST',
-                        headers: {
-                            'Authorization': `Bearer ${token}`,
-                            'Content-Type': 'application/json'
-                        },
-                        body: JSON.stringify({
-                            description: `通过千端网盘上传 - ${file.name}`,
-                            public: false,
-                            files: {
-                                [file.name]: {
-                                    content: content
-                                }
-                            }
-                        })
-                    });
+                    // 生成唯一的gist ID模拟
+                    const gistId = 'local_' + Date.now() + '_' + Math.random().toString(36).substring(2, 15);
                     
-                    if (!response.ok) {
-                        const error = await response.json();
-                        throw new Error(error.message || '上传失败');
+                    // 获取当前登录的GitHub用户名
+                    let githubUsername = '未知用户';
+                    try {
+                        const currentUser = JSON.parse(localStorage.getItem('currentUser') || '{}');
+                        githubUsername = currentUser.username || '未知用户';
+                    } catch (e) {
+                        console.error('获取当前用户信息失败:', e);
                     }
                     
-                    const result = await response.json();
+                    // 获取删除权限设置
+
+                    const deletePermission = document.getElementById('deletePermission') ? document.getElementById('deletePermission').value || 'owner' : 'owner';
+
+                    let specificUsers = [];
+
+                    
+
+                    // 如果选择了指定用户，获取用户列表
+
+                    if (deletePermission === 'specific') {
+
+                        const specificUsersInput = document.getElementById('specificUsers') ? document.getElementById('specificUsers').value : '';
+
+                        if (specificUsersInput && specificUsersInput.trim()) {
+
+                            specificUsers = specificUsersInput.split(',').map(user => user.trim()).filter(user => user);
+
+                        }
+
+                    }
+
+                    
+
+                    // 获取下载权限设置
+
+                    const downloadPermission = document.getElementById('downloadPermission') ? document.getElementById('downloadPermission').value || 'owner' : 'owner';
+
+                    let specificDownloadUsers = [];
+
+                    
+
+                    // 如果选择了指定用户，获取用户列表
+
+                    if (downloadPermission === 'specific') {
+
+                        const specificDownloadUsersInput = document.getElementById('specificDownloadUsers') ? document.getElementById('specificDownloadUsers').value : '';
+
+                        if (specificDownloadUsersInput && specificDownloadUsersInput.trim()) {
+
+                            specificDownloadUsers = specificDownloadUsersInput.split(',').map(user => user.trim()).filter(user => user);
+
+                        }
+
+                    }
+
+                    
+
+                    // 获取修改权限设置
+
+                    const modifyPermission = document.getElementById('modifyPermission') ? document.getElementById('modifyPermission').value || 'owner' : 'owner';
+
+                    let specificModifyUsers = [];
+
+                    
+
+                    // 如果选择了指定用户，获取用户列表
+
+                    if (modifyPermission === 'specific') {
+
+                        const specificModifyUsersInput = document.getElementById('specificModifyUsers') ? document.getElementById('specificModifyUsers').value : '';
+
+                        if (specificModifyUsersInput && specificModifyUsersInput.trim()) {
+
+                            specificModifyUsers = specificModifyUsersInput.split(',').map(user => user.trim()).filter(user => user);
+
+                        }
+
+                    }
+                    
+                    // 创建本地文件记录
+                    const localFileRecord = {
+                        id: gistId,
+                        description: `通过千端网盘上传 - ${file.name}`,
+                        files: {
+                            [file.name]: {
+                                content: hexContent, // 存储十六进制内容
+                                size: file.size,
+                                type: file.type
+                            }
+                        },
+                        uploader: githubUsername, // 添加上传者信息
+                        deletePermission: deletePermission, // 添加删除权限设置
+                        downloadPermission: downloadPermission, // 添加下载权限设置
+                        modifyPermission: modifyPermission, // 添加修改权限设置
+                        specificUsers: specificUsers, // 添加可删除用户列表
+                        specificDownloadUsers: specificDownloadUsers, // 添加可下载用户列表
+                        specificModifyUsers: specificModifyUsers, // 添加可修改用户列表
+                        isLocal: true // 标记为本地存储的文件
+                    };
+                    
+                    // 添加到本地文件列表
+                    localFiles.push(localFileRecord);
                     
                     // 更新进度
                     const progress = ((i + 1) / files.length) * 100;
@@ -393,14 +900,17 @@
                     progressText.textContent = `${Math.round(progress)}%`;
                     
                 } catch (error) {
-                    uploadStatus.textContent = `上传失败 ${file.name}: ${error.message}`;
+                    uploadStatus.textContent = `处理失败 ${file.name}: ${error.message}`;
                     uploadStatus.style.color = 'red';
-                    console.error('上传文件错误:', error);
-                    continue; // 继续上传其他文件，而不是返回
+                    console.error('处理文件错误:', error);
+                    continue; // 继续处理其他文件，而不是返回
                 }
             }
             
-            uploadStatus.textContent = '文件上传成功！';
+            // 一次性保存所有文件到localStorage
+            localStorage.setItem(FILE_LIST_KEY, JSON.stringify(localFiles));
+            
+            uploadStatus.textContent = '文件处理成功！';
             uploadStatus.style.color = 'green';
             
             // 清空文件选择
@@ -417,27 +927,42 @@
             loadUserFiles();
         }
         
-        // 将文件读取为文本
-        function readFileAsText(file) {
+        // 将文件转换为十六进制
+        function readFileAsHex(file) {
             return new Promise((resolve, reject) => {
                 const reader = new FileReader();
-                reader.onload = () => {
-                    resolve(reader.result);
+                reader.onload = function(event) {
+                    const bytes = new Uint8Array(event.target.result);
+                    let hex = '';
+                    for (let i = 0; i < bytes.length; i++) {
+                        const hexByte = bytes[i].toString(16).padStart(2, '0');
+                        hex += hexByte;
+                    }
+                    resolve(hex);
                 };
                 reader.onerror = reject;
-                
-                // 对所有文件使用readAsText，对于文本文件这会直接返回内容，对于二进制文件会尝试转换
-                reader.readAsText(file);
+                reader.readAsArrayBuffer(file);
             });
+        }
+        
+        // 将十六进制转换为文件内容
+        function hexToFileContent(hex) {
+            const bytes = new Uint8Array(hex.length / 2);
+            for (let i = 0; i < hex.length; i += 2) {
+                bytes[i / 2] = parseInt(hex.substr(i, 2), 16);
+            }
+            return bytes;
         }
         
         // 加载用户文件列表
         async function loadUserFiles() {
-            const token = getGithubToken(); // 使用解密函数获取token
+            // 获取本地存储的文件列表
+            let localFiles = JSON.parse(localStorage.getItem(FILE_LIST_KEY) || '[]');
             
+            // 如果没有GitHub token，只显示本地文件
+            const token = getGithubToken();
             if (!token) {
-                // 如果没有 token，显示本地缓存的文件列表
-                displayLocalFiles();
+                displayFiles(localFiles);
                 return;
             }
             
@@ -459,15 +984,29 @@
                     gist.description && gist.description.includes('通过千端网盘上传')
                 );
                 
-                // 显示文件列表
-                displayFiles(filteredGists);
+                // 为GitHub Gist文件添加上传者信息和默认删除权限
+                const gistsWithUploader = filteredGists.map(gist => ({
+                    ...gist,
+                    uploader: (gist.owner && gist.owner.login) ? gist.owner.login : '未知用户', // 从Gist API获取上传者信息
+                    deletePermission: 'owner', // GitHub Gist文件默认仅上传者可删除
+                    specificUsers: [], // GitHub Gist文件默认没有指定用户
+                    isLocal: false
+                }));
                 
-                // 同时保存到本地存储
-                localStorage.setItem(FILE_LIST_KEY, JSON.stringify(filteredGists));
+                // 合并本地文件和GitHub Gist文件
+                const allFiles = [...localFiles, ...gistsWithUploader];
+                
+                // 显示文件列表
+                displayFiles(allFiles);
+                
+                // 更新本地存储的GitHub文件部分
+                // 保留本地文件，更新GitHub文件
+                const updatedLocalFiles = localFiles.filter(file => file.isLocal);
+                localStorage.setItem(FILE_LIST_KEY, JSON.stringify([...localFiles, ...gistsWithUploader]));
             } catch (error) {
                 console.error('加载文件列表错误:', error);
                 // 如果 API 加载失败，显示本地缓存的文件列表
-                displayLocalFiles();
+                displayFiles(localFiles);
             }
         }
         
@@ -480,17 +1019,55 @@
                 return;
             }
             
+            // 获取当前登录的用户信息
+            const currentUser = JSON.parse(localStorage.getItem('currentUser') || '{}');
+            const currentUsername = currentUser.username || '未知用户';
+            
             fileList.innerHTML = gists.map(gist => {
                 // 获取文件名和内容
                 const fileName = Object.keys(gist.files)[0];
                 const file = gist.files[fileName];
                 
+                // 根据文件来源显示不同的标识
+                const sourceLabel = gist.isLocal ? '[本地]' : '[GitHub]';
+                
+                // 获取上传者信息
+                const uploader = gist.uploader || '未知用户';
+                
+                // 检查当前用户是否有删除权限
+                let canDelete = false;
+                if (gist.deletePermission === 'all') {
+                    // 如果设置为所有人可删除
+                    canDelete = true;
+                } else if (gist.deletePermission === 'specific' &&
+                          gist.specificUsers &&
+                          gist.specificUsers.includes(currentUsername)) {
+                    // 如果当前用户在指定用户列表中
+                    canDelete = true;
+                } else {
+                    // 默认仅上传者可删除
+                    canDelete = (gist.uploader && gist.uploader === currentUsername) || !gist.uploader;
+                }
+                
+                // 获取删除权限描述
+                let deletePermissionText = '';
+                if (gist.deletePermission === 'all') {
+                    deletePermissionText = '所有人';
+                } else if (gist.deletePermission === 'specific' && gist.specificUsers && gist.specificUsers.length > 0) {
+                    deletePermissionText = `指定用户: ${gist.specificUsers.join(', ')}`;
+                } else {
+                    deletePermissionText = '仅上传者';
+                }
+                
                 return `
                     <div class="file-item">
-                        <div><strong>${fileName}</strong></div>
+                        <div><strong>${fileName}</strong> ${sourceLabel}</div>
+                        <div>上传者: ${uploader}</div>
+                        <div>删除权限: ${deletePermissionText}</div>
                         <div class="file-actions">
                             <button onclick="downloadFile('${gist.id}', '${fileName}')">下载</button>
-                            <button onclick="deleteFile('${gist.id}')">删除</button>
+                            ${canDelete ? `<button onclick="deleteFile('${gist.id}')">删除</button>` : `<button disabled title="无删除权限">删除</button>`}
+                            ${canDelete ? `<button onclick="modifyFile('${gist.id}', '${fileName}')">修改</button>` : `<button disabled title="无修改权限">修改</button>`}
                         </div>
                     </div>
                 `;
@@ -505,76 +1082,317 @@
         
         // 下载文件
         async function downloadFile(gistId, fileName) {
-            const token = getGithubToken(); // 使用解密函数获取token
-            
-            if (!token) {
-                alert('请先连接 GitHub');
-                return;
-            }
-            
-            try {
-                const response = await fetch(`https://api.github.com/gists/${gistId}`, {
-                    headers: {
-                        'Authorization': `Bearer ${token}`
+            // 检查是否为本地存储的文件
+            if (gistId.startsWith('local_')) {
+                try {
+                    // 从localStorage获取本地文件列表
+                    const localFiles = JSON.parse(localStorage.getItem(FILE_LIST_KEY) || '[]');
+                    const localFile = localFiles.find(file => file.id === gistId);
+                    
+                    if (!localFile) {
+                        alert('文件不存在');
+                        return;
                     }
-                });
+                    
+                    const file = localFile.files[fileName];
+                    const hexContent = file.content;
+                    
+                    // 将十六进制转换为Uint8Array
+                    const bytes = hexToFileContent(hexContent);
+                    
+                    // 创建Blob对象
+                    const blob = new Blob([bytes], { type: file.type || 'application/octet-stream' });
+                    
+                    // 创建下载链接
+                    const url = URL.createObjectURL(blob);
+                    const a = document.createElement('a');
+                    a.href = url;
+                    a.download = fileName;
+                    document.body.appendChild(a);
+                    a.click();
+                    document.body.removeChild(a);
+                    URL.revokeObjectURL(url);
+                } catch (error) {
+                    alert('下载文件失败: ' + error.message);
+                    console.error('下载文件错误:', error);
+                }
+            } else {
+                // 处理GitHub Gist上的文件
+                const token = getGithubToken(); // 使用解密函数获取token
                 
-                if (!response.ok) {
-                    throw new Error('获取文件内容失败');
+                if (!token) {
+                    alert('请先连接 GitHub');
+                    return;
                 }
                 
-                const gist = await response.json();
-                const file = gist.files[fileName];
-                const content = file.content;
-                
-                // 创建下载链接
-                const blob = new Blob([content], { type: 'application/octet-stream' });
-                const url = URL.createObjectURL(blob);
-                const a = document.createElement('a');
-                a.href = url;
-                a.download = fileName;
-                document.body.appendChild(a);
-                a.click();
-                document.body.removeChild(a);
-                URL.revokeObjectURL(url);
-            } catch (error) {
-                alert('下载文件失败: ' + error.message);
-                console.error('下载文件错误:', error);
+                try {
+                    const response = await fetch(`https://api.github.com/gists/${gistId}`, {
+                        headers: {
+                            'Authorization': `Bearer ${token}`
+                        }
+                    });
+                    
+                    if (!response.ok) {
+                        throw new Error('获取文件内容失败');
+                    }
+                    
+                    const gist = await response.json();
+                    const file = gist.files[fileName];
+                    const content = file.content;
+                    
+                    // 创建下载链接
+                    const blob = new Blob([content], { type: 'application/octet-stream' });
+                    const url = URL.createObjectURL(blob);
+                    const a = document.createElement('a');
+                    a.href = url;
+                    a.download = fileName;
+                    document.body.appendChild(a);
+                    a.click();
+                    document.body.removeChild(a);
+                    URL.revokeObjectURL(url);
+                } catch (error) {
+                    alert('下载文件失败: ' + error.message);
+                    console.error('下载文件错误:', error);
+                }
             }
+        }
+        
+        // 修改文件
+        async function modifyFile(gistId, fileName) {
+            // 获取当前登录的用户信息
+            const currentUser = JSON.parse(localStorage.getItem('currentUser') || '{}');
+            const currentUsername = currentUser.username || '未知用户';
+            
+            // 从localStorage获取文件信息以检查上传者
+            const allFiles = JSON.parse(localStorage.getItem(FILE_LIST_KEY) || '[]');
+            const fileToModify = allFiles.find(file => file.id === gistId);
+            
+            // 检查权限：根据删除权限设置判断是否可以修改文件（修改权限与删除权限相同）
+            if (fileToModify) {
+                // 如果设置为所有人可修改
+                if (fileToModify.deletePermission === 'all') {
+                    // 任何人都可以修改，无需进一步检查
+                }
+                // 如果设置为指定用户可修改
+                else if (fileToModify.deletePermission === 'specific' && 
+                         fileToModify.specificUsers && 
+                         fileToModify.specificUsers.includes(currentUsername)) {
+                    // 当前用户在指定用户列表中，可以修改
+                }
+                // 如果设置为仅上传者可修改，且当前用户不是上传者
+                else if (fileToModify.deletePermission === 'owner' && 
+                         fileToModify.uploader && 
+                         fileToModify.uploader !== currentUsername) {
+                    alert('您没有权限修改此文件！');
+                    return;
+                }
+                // 其他情况（包括上传者修改自己的文件）
+            }
+            
+            // 检查是否为本地存储的文件
+            if (gistId.startsWith('local_')) {
+                // 创建修改文件的界面
+                showModifyFileDialog(gistId, fileName);
+            } else {
+                alert('GitHub Gist文件的修改功能暂未实现。请在GitHub上直接修改。');
+            }
+        }
+        
+        // 显示修改文件对话框
+        function showModifyFileDialog(gistId, fileName) {
+            // 创建一个模态对话框来修改文件
+            const modifyDialog = document.createElement('div');
+            modifyDialog.id = 'modifyFileDialog';
+            modifyDialog.style.position = 'fixed';
+            modifyDialog.style.top = '50%';
+            modifyDialog.style.left = '50%';
+            modifyDialog.style.transform = 'translate(-50%, -50%)';
+            modifyDialog.style.backgroundColor = 'white';
+            modifyDialog.style.padding = '20px';
+            modifyDialog.style.border = '1px solid #ccc';
+            modifyDialog.style.borderRadius = '8px';
+            modifyDialog.style.zIndex = '1000';
+            modifyDialog.style.boxShadow = '0 4px 15px rgba(0,0,0,0.3)';
+            modifyDialog.style.width = '600px';
+            modifyDialog.style.maxWidth = '90%';
+            modifyDialog.style.maxHeight = '80vh';
+            modifyDialog.style.overflowY = 'auto';
+            
+            // 获取文件内容
+            const allFiles = JSON.parse(localStorage.getItem(FILE_LIST_KEY) || '[]');
+            const file = allFiles.find(f => f.id === gistId);
+            const fileContent = file.files[fileName].content;
+            
+            // 将十六进制内容转换为文本（如果是文本文件）
+            let originalContent = '';
+            try {
+                // 检查是否为文本文件
+                if (fileName.endsWith('.txt') || fileName.endsWith('.js') || fileName.endsWith('.html') || 
+                    fileName.endsWith('.css') || fileName.endsWith('.json') || fileName.endsWith('.md')) {
+                    const bytes = hexToFileContent(fileContent);
+                    originalContent = new TextDecoder().decode(bytes);
+                } else {
+                    // 如果是二进制文件，显示为十六进制
+                    originalContent = fileContent;
+                }
+            } catch (e) {
+                // 如果转换失败，显示原始内容
+                originalContent = fileContent;
+            }
+            
+            modifyDialog.innerHTML = `
+                <h3>修改文件: ${fileName}</h3>
+                <div style="margin-bottom: 15px;">
+                    <label for="newFileContent">文件内容:</label>
+                    <textarea id="newFileContent" style="width: 100%; height: 300px; padding: 10px; font-family: monospace; border: 1px solid #ddd; border-radius: 4px;">${originalContent}</textarea>
+                </div>
+                <div style="text-align: center;">
+                    <button id="saveModifiedFileBtn" style="padding: 10px 20px; margin: 5px; background-color: #4CAF50; color: white; border: none; border-radius: 4px; cursor: pointer;">保存</button>
+                    <button id="cancelModifyBtn" style="padding: 10px 20px; margin: 5px; background-color: #999; color: white; border: none; border-radius: 4px; cursor: pointer;">取消</button>
+                </div>
+            `;
+            
+            document.body.appendChild(modifyDialog);
+            
+            // 绑定保存按钮事件
+            document.getElementById('saveModifiedFileBtn').addEventListener('click', async function() {
+                const newContent = document.getElementById('newFileContent').value;
+                
+                try {
+                    // 将新内容转换为十六进制
+                    let hexContent;
+                    if (fileName.endsWith('.txt') || fileName.endsWith('.js') || fileName.endsWith('.html') || 
+                        fileName.endsWith('.css') || fileName.endsWith('.json') || fileName.endsWith('.md')) {
+                        // 对于文本文件，直接使用内容
+                        const encoder = new TextEncoder();
+                        const bytes = encoder.encode(newContent);
+                        hexContent = Array.from(bytes).map(b => b.toString(16).padStart(2, '0')).join('');
+                    } else {
+                        // 对于二进制文件，假设用户输入的是十六进制
+                        hexContent = newContent;
+                    }
+                    
+                    // 更新文件内容
+                    const allFiles = JSON.parse(localStorage.getItem(FILE_LIST_KEY) || '[]');
+                    const fileIndex = allFiles.findIndex(f => f.id === gistId);
+                    
+                    if (fileIndex !== -1) {
+                        // 更新文件内容
+                        allFiles[fileIndex].files[fileName].content = hexContent;
+                        allFiles[fileIndex].files[fileName].size = newContent.length;
+                        
+                        // 保存更新
+                        localStorage.setItem(FILE_LIST_KEY, JSON.stringify(allFiles));
+                        
+                        alert('文件修改成功！');
+                        
+                        // 移除对话框
+                        document.body.removeChild(modifyDialog);
+                        
+                        // 重新加载文件列表
+                        loadUserFiles();
+                    }
+                } catch (error) {
+                    alert('修改文件失败: ' + error.message);
+                    console.error('修改文件错误:', error);
+                }
+            });
+            
+            // 绑定取消按钮事件
+            document.getElementById('cancelModifyBtn').addEventListener('click', function() {
+                document.body.removeChild(modifyDialog);
+            });
         }
         
         // 删除文件
         async function deleteFile(gistId) {
-            const token = getGithubToken(); // 使用解密函数获取token
+            // 获取当前登录的用户信息
+            const currentUser = JSON.parse(localStorage.getItem('currentUser') || '{}');
+            const currentUsername = currentUser.username || '未知用户';
             
-            if (!token) {
-                alert('请先连接 GitHub');
-                return;
+            // 从localStorage获取文件信息以检查上传者
+            const allFiles = JSON.parse(localStorage.getItem(FILE_LIST_KEY) || '[]');
+            const fileToDelete = allFiles.find(file => file.id === gistId);
+            
+            // 检查权限：根据删除权限设置判断是否可以删除文件
+            if (fileToDelete) {
+                // 如果设置为所有人可删除
+                if (fileToDelete.deletePermission === 'all') {
+                    // 任何人都可以删除，无需进一步检查
+                }
+                // 如果设置为指定用户可删除
+                else if (fileToDelete.deletePermission === 'specific' && 
+                         fileToDelete.specificUsers && 
+                         fileToDelete.specificUsers.includes(currentUsername)) {
+                    // 当前用户在指定用户列表中，可以删除
+                }
+                // 如果设置为仅上传者可删除，且当前用户不是上传者
+                else if (fileToDelete.deletePermission === 'owner' && 
+                         fileToDelete.uploader && 
+                         fileToDelete.uploader !== currentUsername) {
+                    alert('您没有权限删除此文件！');
+                    return;
+                }
+                // 其他情况（包括上传者删除自己的文件）
             }
             
-            if (!confirm('确定要删除这个文件吗？')) {
-                return;
-            }
-            
-            try {
-                const response = await fetch(`https://api.github.com/gists/${gistId}`, {
-                    method: 'DELETE',
-                    headers: {
-                        'Authorization': `Bearer ${token}`
-                    }
-                });
-                
-                if (!response.ok) {
-                    throw new Error('删除失败');
+            // 检查是否为本地存储的文件
+            if (gistId.startsWith('local_')) {
+                if (!confirm('确定要删除这个文件吗？')) {
+                    return;
                 }
                 
-                alert('文件删除成功！');
+                try {
+                    // 从localStorage获取本地文件列表
+                    let localFiles = JSON.parse(localStorage.getItem(FILE_LIST_KEY) || '[]');
+                    
+                    // 过滤掉要删除的文件
+                    localFiles = localFiles.filter(file => file.id !== gistId);
+                    
+                    // 保存更新后的文件列表
+                    localStorage.setItem(FILE_LIST_KEY, JSON.stringify(localFiles));
+                    
+                    alert('文件删除成功！');
+                    
+                    // 重新加载文件列表
+                    loadUserFiles();
+                } catch (error) {
+                    alert('删除失败: ' + error.message);
+                    console.error('删除文件错误:', error);
+                }
+            } else {
+                // 处理GitHub Gist上的文件
+                const token = getGithubToken(); // 使用解密函数获取token
                 
-                // 重新加载文件列表
-                loadUserFiles();
-            } catch (error) {
-                alert('删除失败: ' + error.message);
-                console.error('删除文件错误:', error);
+                if (!token) {
+                    alert('请先连接 GitHub');
+                    return;
+                }
+                
+                if (!confirm('确定要删除这个文件吗？')) {
+                    return;
+                }
+                
+                try {
+                    const response = await fetch(`https://api.github.com/gists/${gistId}`, {
+                        method: 'DELETE',
+                        headers: {
+                            'Authorization': `Bearer ${token}`
+                        }
+                    });
+                    
+                    if (!response.ok) {
+                        throw new Error('删除失败');
+                    }
+                    
+                    alert('文件删除成功！');
+                    
+                    // 重新加载文件列表
+                    loadUserFiles();
+                } catch (error) {
+                    alert('删除失败: ' + error.message);
+                    console.error('删除文件错误:', error);
+                }
             }
         }
         
@@ -587,6 +1405,15 @@
             handleOAuthCallback(); // 处理OAuth回调
 
         };
+
     </script>
+
+    <div style="position: fixed; bottom: 10px; right: 10px; font-size: 12px; color: rgba(255,255,255,0.7);">
+
+        千端网盘 v1.0
+
+    </div>
+
 </body>
+
 </html>
